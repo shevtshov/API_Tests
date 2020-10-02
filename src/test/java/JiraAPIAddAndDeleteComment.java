@@ -4,6 +4,8 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.lessThan;
 
 public class JiraAPIAddAndDeleteComment {
 
@@ -55,15 +57,30 @@ public class JiraAPIAddAndDeleteComment {
     }
 
     @Test
-    public  void deleteComment() {
+    public void deleteComment() {
         Response response =
                 given()
                         .auth().preemptive().basic("webinar5", "webinar5")
                         .contentType(ContentType.JSON)
                         .when()
-                        .delete(String.format(APIPathes.comment, APIPathes.issue2)+ comment)
+                        .delete(String.format(APIPathes.comment, APIPathes.issue2) + comment)
                         .then()
                         .statusCode(204)
+                        .extract().response();
+        response.print();
+    }
+
+    @Test
+    public void checkDeletedComment() {
+        Response response =
+                given()
+                        .auth().preemptive().basic("webinar5", "webinar5")
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .get(APIPathes.issue2)
+                        .then()
+                        .and().time(lessThan(1000L)).body(JiraAPIAddAndDeleteComment.comment, equalTo(null))
+                        .statusCode(200)
                         .extract().response();
         response.print();
     }
