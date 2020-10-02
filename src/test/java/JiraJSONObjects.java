@@ -3,6 +3,9 @@ import org.json.simple.JSONObject;
 public class JiraJSONObjects {
 
     public static String newIssueJSON() {
+//public static void main(String[] args) {
+
+
         JSONObject newIssueJSON = new JSONObject();
         JSONObject fields = new JSONObject();
         fields.put("summary", "Test ticket");
@@ -10,14 +13,15 @@ public class JiraJSONObjects {
         issueType.put("id", "10107");
         JSONObject project = new JSONObject();
         project.put("id", "11400");
-        JSONObject assignee = new JSONObject();
-        assignee.put("name", "webinar5");
+        JSONObject reporter = new JSONObject();
+        reporter.put("name", "webinar5");
 
         fields.put("issueType", issueType);
         fields.put("project", project);
-        fields.put("assignee", assignee);
+        fields.put("reporter", reporter);
 
         newIssueJSON.put("fields", fields);
         return newIssueJSON.toJSONString();
+//    System.out.println(newIssueJSON.toJSONString());
     }
 }

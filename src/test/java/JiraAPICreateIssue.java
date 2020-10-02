@@ -1,5 +1,6 @@
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
@@ -9,26 +10,28 @@ public class JiraAPICreateIssue {
 
     @Test
     public void createIssueAndCheckContent() {
+
+        JSONObject newIssueJSON = new JSONObject();
+        JSONObject fields = new JSONObject();
+        fields.put("summary", "Test ticket");
+        JSONObject issueType = new JSONObject();
+        issueType.put("id", "10105");
+        JSONObject project = new JSONObject();
+        project.put("id", "10508");
+        JSONObject reporter = new JSONObject();
+        reporter.put("name", "webinar5");
+
+        fields.put("issuetype", issueType);
+        fields.put("project", project);
+        fields.put("reporter", reporter);
+
+        newIssueJSON.put("fields", fields);
         // Create issue
         Response response =
                 given()
                         .auth().preemptive().basic("webinar5", "webinar5")
                         .contentType(ContentType.JSON)
-                        .body("{\n" +
-                                "   \"fields\":{\n" +
-                                "      \"summary\":\"Test ticket\",\n" +
-                                "      \"issuetype\":{\n" +
-                                "         \"id\":\"10105\",\n" +
-                                "         \"name\":\"test\"\n" +
-                                "      },\n" +
-                                "      \"project\":{\n" +
-                                "         \"id\":\"10508\"\n" +
-                                "      },\n" +
-                                "   \"reporter\": {\n" +
-                                "      \"name\": \"webinar5\"\n" +
-                                "    }\n" +
-                                "   }\n" +
-                                "}")
+                        .body(newIssueJSON.toJSONString())
                         .when().post("https://jira.hillel.it/rest/api/2/issue")
                         .then().contentType(ContentType.JSON).statusCode(201)
                         .extract().response();
