@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 public class JiraAPICreateIssue {
 
     @Test
-    public void createIssue() {
+    public void createIssueAndCheckContent() {
         // Create issue
         Response response =
                 given()
@@ -50,7 +50,23 @@ public class JiraAPICreateIssue {
                         .extract().response();
         getIssue.print();
         assertEquals(getIssue.path("fields.summary"), "Test ticket");
-        assertEquals(getIssue.path("fields.creator.name"),"webinar5");
+        assertEquals(getIssue.path("fields.creator.name"), "webinar5");
+
+
+        //Add comment
+
+//        Response addComment =
+//
+//                given()
+//                        .auth().preemptive().basic("webinar5", "webinar5")
+//                        .contentType(ContentType.JSON)
+//                        .when()
+//                        .post(String.format(APIPathes.comment, ticket))
+//                        .get("http://jira.hillel.it/rest/api/2/issue/WEBINAR-13727")
+//                        .then().contentType(ContentType.JSON)
+//                        .then().statusCode(201)
+//                        .extract().response();
+//addComment.print();
 
     }
 }
