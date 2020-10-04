@@ -5,8 +5,11 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class JiraAPICreateIssue {
+
+    public String createdIssueKey;
 
     @Test
     public void createIssueAndCheckContent() {
@@ -28,8 +31,6 @@ public class JiraAPICreateIssue {
         newIssueJSON.put("fields", fields);
 
 
-
-
         // Create issue
         Response response = JiraAPISteps.createIssue(newIssueJSON.toJSONString());
         response.print();
@@ -41,6 +42,7 @@ public class JiraAPICreateIssue {
         getIssue.print();
         assertEquals(getIssue.path("fields.summary"), "Test ticket");
         assertEquals(getIssue.path("fields.creator.name"), "webinar5");
-
+        createdIssueKey = getIssue.path("key");
+        assertTrue(createdIssueKey.contains("WEBINAR"));
     }
 }
