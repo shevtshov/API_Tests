@@ -4,12 +4,12 @@ import io.restassured.response.Response;
 import org.hamcrest.Matcher;
 import org.hamcrest.text.MatchesPattern;
 import org.testng.annotations.Test;
+import utils.APIPathes;
+import utils.Credentials;
 
-import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class JiraAPIGetIssue {
     @Test
@@ -19,10 +19,10 @@ public class JiraAPIGetIssue {
         Response response =
 
                 given()
-                        .auth().preemptive().basic("webinar5", "webinar5")
+                        .auth().preemptive().basic(Credentials.username, Credentials.password)
                         .contentType(ContentType.JSON)
                         .when()
-                        .get("http://jira.hillel.it/rest/api/2/issue/WEBINAR-13727")
+                        .get(APIPathes.issue2)
                         .then().contentType(ContentType.JSON)
                         .extract().response();
 

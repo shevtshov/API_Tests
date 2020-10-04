@@ -9,6 +9,9 @@
 <!--        </groups>-->
         <classes>
             <class name="JiraAPIGetIssue"/>
+            <class name="JiraAPISteps"/>
+            <class name="JiraAPIAddAndDeleteComment"/>
+            <class name="JiraAPICreateIssue"/>
         </classes>
     </test>
 </suite>

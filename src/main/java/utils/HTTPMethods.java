@@ -1,9 +1,8 @@
+package utils;
 import io.restassured.response.Response;
-
 import static io.restassured.RestAssured.given;
 
 public class HTTPMethods {
-
     public static Response post(String urlPath, String body) {
         Response response = given().
                 auth().preemptive().basic("webinar5", "webinar5").

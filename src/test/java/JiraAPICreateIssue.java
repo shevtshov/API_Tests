@@ -26,35 +26,21 @@ public class JiraAPICreateIssue {
         fields.put("reporter", reporter);
 
         newIssueJSON.put("fields", fields);
+
+
+
+
         // Create issue
         Response response = JiraAPISteps.createIssue(newIssueJSON.toJSONString());
         response.print();
         String ticket = response.path("id");
         System.out.println(ticket);
 
-
         //Get issue and check
         Response getIssue = JiraAPISteps.getIssue(ticket);
-
         getIssue.print();
         assertEquals(getIssue.path("fields.summary"), "Test ticket");
         assertEquals(getIssue.path("fields.creator.name"), "webinar5");
-
-
-        //Add comment
-
-//        Response addComment =
-//
-//                given()
-//                        .auth().preemptive().basic("webinar5", "webinar5")
-//                        .contentType(ContentType.JSON)
-//                        .when()
-//                        .post(String.format(APIPathes.comment, ticket))
-//                        .get("http://jira.hillel.it/rest/api/2/issue/WEBINAR-13727")
-//                        .then().contentType(ContentType.JSON)
-//                        .then().statusCode(201)
-//                        .extract().response();
-//addComment.print();
 
     }
 }
