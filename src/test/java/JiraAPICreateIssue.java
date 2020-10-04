@@ -27,30 +27,15 @@ public class JiraAPICreateIssue {
 
         newIssueJSON.put("fields", fields);
         // Create issue
-        Response response =
-                given()
-                        .auth().preemptive().basic("webinar5", "webinar5")
-                        .contentType(ContentType.JSON)
-                        .body(newIssueJSON.toJSONString())
-                        .when().post("https://jira.hillel.it/rest/api/2/issue")
-                        .then().contentType(ContentType.JSON).statusCode(201)
-                        .extract().response();
+        Response response = JiraAPISteps.createIssue(newIssueJSON.toJSONString());
         response.print();
-
         String ticket = response.path("id");
         System.out.println(ticket);
 
+
         //Get issue and check
-        Response getIssue =
-                given()
-                        .auth().preemptive().basic("webinar5", "webinar5")
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .get("https://jira.hillel.it/rest/api/2/issue/" + ticket)
-                        .then()
-                        .contentType(ContentType.JSON)
-                        .statusCode(200)
-                        .extract().response();
+        Response getIssue = JiraAPISteps.getIssue(ticket);
+
         getIssue.print();
         assertEquals(getIssue.path("fields.summary"), "Test ticket");
         assertEquals(getIssue.path("fields.creator.name"), "webinar5");
