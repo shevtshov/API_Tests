@@ -26,9 +26,7 @@ public class JiraAPIGetIssue {
                         .then().contentType(ContentType.JSON)
                         .extract().response();
 
-    //    Cookies cookies = response.getDetailedCookies();
         assertEquals(response.statusCode(), 200);
-    //    assertEquals(response.contentType(),ContentType.JSON.toString());
         assertEquals("WEBINAR-13727", response.path("key"));
     }
 }
